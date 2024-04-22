@@ -5,7 +5,7 @@
 # To learn more about the azure.yaml file, visit https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/azd-schema
 
 # Name of the application.
-name: cosmos-db-table-dotnet-quickstart
+name: cosmos-db-table-nodejs-quickstart
 services:
   web:
     project: ./src

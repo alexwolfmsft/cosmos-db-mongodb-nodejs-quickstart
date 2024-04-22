@@ -1,13 +1,18 @@
 // Read .env file and set environment variables
 require('dotenv').config();
+
 const random = Math.floor(Math.random() * 100);
 
 // Use official mongodb driver to connect to the server
 const { MongoClient, ObjectId } = require('mongodb');
 
 // New instance of MongoClient with connection string
-// for Cosmos DB
+// for Cosmos 
+
 const url = process.env.COSMOS_CONNECTION_STRING;
+
+console.log(url);
+
 const client = new MongoClient(url);
 
 async function main() {
@@ -43,7 +48,7 @@ async function main() {
     console.log(`upsertResult1: ${JSON.stringify(upsertResult1)}\n`);
 
     // Update via upsert on chained instance
-    const query2 = { _id: ObjectId(upsertResult1.upsertedId) };
+    const query2 = { _id: new ObjectId(upsertResult1.upsertedId) };
     const update2 = { $set: { quantity: 20 } };
     const upsertResult2 = await client.db(`adventureworks`).collection('products').updateOne(query2, update2, options);
     console.log(`upsertResult2: ${JSON.stringify(upsertResult2)}\n`);
@@ -52,7 +57,7 @@ async function main() {
     // - without sharding, should use {_id}
     // - with sharding,    should use {_id, partitionKey }, ex: {_id, category}
     const foundProduct = await collection.findOne({
-        _id: ObjectId(upsertResult1.upsertedId),
+        _id: new ObjectId(upsertResult1.upsertedId),
         category: "gear-surf-surfboards"
     });
     console.log(`foundProduct: ${JSON.stringify(foundProduct)}\n`);

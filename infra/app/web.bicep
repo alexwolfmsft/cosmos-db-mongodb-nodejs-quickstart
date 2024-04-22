@@ -77,7 +77,6 @@ module containerAppsApp '../core/host/container-apps/app.bicep' = {
     userAssignedManagedIdentityIds: [
       userAssignedManagedIdentity.resourceId
     ]
-    containerImage: 'mcr.microsoft.com/dotnet/samples:aspnetapp'
   }
 }
 
