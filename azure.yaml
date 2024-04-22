@@ -5,15 +5,19 @@
 # To learn more about the azure.yaml file, visit https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/azd-schema
 
 # Name of the application.
-name: cosmos-db-table-nodejs-quickstart
+name: cosmos-db-mongodb-nodejs-quickstart
+hooks:
+  postprovision: # Example of an inline script. (shell is required for inline scripts)
+    shell: sh
+    run: 'azd env get-values --no-prompt > src/.env'
 services:
   web:
     project: ./src
-    language: csharp
+    language: js
     host: containerapp
     docker:
       path: ./Dockerfile
-      context: ../
+      context: ./
 pipeline:
   provider: github
 # services:

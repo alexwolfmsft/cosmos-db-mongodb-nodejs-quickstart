@@ -152,6 +152,7 @@ module web 'app/web.bicep' = {
     tags: tags
     serviceTag: 'web'
     keyVaultEndpoint: kv.outputs.endpoint
+    cosmosconnectionstring: cosmos.outputs.connectionString
   }
 }
 
@@ -183,3 +184,4 @@ output AZURE_USER_ASSIGNED_IDENTITY_NAME string = identity.outputs.name
 
 // Security outputs
 output KEYVAULT_ENDPOINT string = kv.outputs.endpoint
+output COSMOS_CONNECTION_STRING string = cosmos.outputs.connectionString

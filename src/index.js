@@ -11,8 +11,6 @@ const { MongoClient, ObjectId } = require('mongodb');
 
 const url = process.env.COSMOS_CONNECTION_STRING;
 
-console.log(url);
-
 const client = new MongoClient(url);
 
 async function main() {

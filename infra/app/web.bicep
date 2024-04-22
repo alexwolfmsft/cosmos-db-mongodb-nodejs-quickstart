@@ -18,6 +18,9 @@ type managedIdentity = {
 @description('Unique identifier for user-assigned managed identity.')
 param userAssignedManagedIdentity managedIdentity
 
+@description('Unique identifier for user-assigned managed identity.')
+param cosmosconnectionstring string
+
 module containerAppsEnvironment '../core/host/container-apps/environments/managed.bicep' = {
   name: 'container-apps-env'
   params: {
@@ -53,6 +56,10 @@ module containerAppsApp '../core/host/container-apps/app.bicep' = {
         name: 'azure-client-id' // Create a uniquely-named secret
         value: userAssignedManagedIdentity.clientId // Client ID of user-assigned managed identity
       }
+      {
+        name: 'cosmos-connection-string' // Create a uniquely-named secret
+        value: cosmosconnectionstring // Client ID of user-assigned managed identity
+      }
     ]
     environmentVariables: [
       {
@@ -70,6 +77,10 @@ module containerAppsApp '../core/host/container-apps/app.bicep' = {
       {
         name: 'AZURE_CLIENT_ID'
         secretRef: 'azure-client-id'
+      }
+      {
+        name: 'COSMOS_CONNECTION_STRING'
+        secretRef: 'cosmos-connection-string'
       }
     ]
     targetPort: 8080
