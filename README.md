@@ -4,7 +4,7 @@ This is a simple Blazor web application to illustrate common basic usage of Azur
 
 When you are finished, you will have a fully functional web application deployed to Azure.
 
-![Screenshot of the deployed web application.](assets/cosmos-table-app.png)
+![Screenshot of the deployed web application.](assets/cosmos-table-nodejs-app.png)
 
 <sup>Screenshot of the deployed web application.</sup>
 
