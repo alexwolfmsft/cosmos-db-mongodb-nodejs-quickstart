@@ -54,8 +54,7 @@ export async function start(emit) {
     // - without sharding, should use {_id}
     // - with sharding,    should use {_id, partitionKey }, ex: {_id, category}
     const foundProduct = await collection.findOne({
-        _id: new ObjectId(upsertResult1.upsertedId),
-        category: "gear-surf-surfboards"
+        _id: new ObjectId(upsertResult2.upsertedId)
     });
     emit(`foundProduct: ${JSON.stringify(foundProduct)}\n`);
 

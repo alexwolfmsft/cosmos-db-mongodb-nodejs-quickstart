@@ -27,7 +27,7 @@ io.on('connection', (socket) => {
   socket.on('start', async (_) => {
     console.log('Started');
     await start(function emitMessage(message) {
-      console.log(message);
+      //console.log(message);
       io.emit('new_message', message);
     });
   });
