@@ -12,7 +12,7 @@ const url = process.env.COSMOS_CONNECTION_STRING;
 // for Cosmos 
 const client = new MongoClient(url);
 
-export async function start(emit) {
+export async function main(emit) {
 
     // Use connect method to connect to the server
     await client.connect();

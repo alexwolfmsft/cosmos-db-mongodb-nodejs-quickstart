@@ -5,7 +5,7 @@ import { dirname, join } from 'node:path';
 import { Server } from 'socket.io';
 import favicon from 'serve-favicon';
 // Read .env file and set environment variables
-import { start } from './cosmos.js'
+import { main } from './cosmos.js'
 
 const app = express();
 const server = createServer(app);
@@ -26,7 +26,7 @@ io.on('connection', (socket) => {
 
   socket.on('start', async (_) => {
     console.log('Started');
-    await start(function emitMessage(message) {
+    await main(function emitMessage(message) {
       //console.log(message);
       io.emit('new_message', message);
     });
