@@ -1,34 +1,33 @@
-// Read .env file and set environment variables
-require('dotenv').config();
+import { MongoClient, ObjectId } from 'mongodb';
+import 'dotenv/config'
 
 const random = Math.floor(Math.random() * 100);
 
 // Use official mongodb driver to connect to the server
-const { MongoClient, ObjectId } = require('mongodb');
-
-// New instance of MongoClient with connection string
-// for Cosmos 
+// const { MongoClient, ObjectId } = require('mongodb');
 
 const url = process.env.COSMOS_CONNECTION_STRING;
 
+// New instance of MongoClient with connection string
+// for Cosmos 
 const client = new MongoClient(url);
 
-async function main() {
+export async function start(emit) {
 
     // Use connect method to connect to the server
     await client.connect();
 
     // Database reference with creation if it does not already exist
     const db = client.db(`adventureworks`);
-    console.log(`New database:\t${db.databaseName}\n`);
+    emit(`New database:\t${db.databaseName}\n`);
 
     // Collection reference with creation if it does not already exist
     const collection = db.collection('products');
-    console.log(`New collection:\t${collection.collectionName}\n`);
+    emit(`New collection:\t${collection.collectionName}\n`);
 
     // create index to sort by name
     const indexResult = await collection.createIndex({ name: 1 });
-    console.log(`indexResult: ${JSON.stringify(indexResult)}\n`);
+    emit(`indexResult: ${JSON.stringify(indexResult)}\n`);
 
     // Create new doc and upsert (create or replace) to collection
     const product = {
@@ -43,13 +42,13 @@ async function main() {
 
     // Insert via upsert (create or replace) doc to collection directly
     const upsertResult1 = await collection.updateOne(query, update, options);
-    console.log(`upsertResult1: ${JSON.stringify(upsertResult1)}\n`);
+    emit(`upsertResult1: ${JSON.stringify(upsertResult1)}\n`);
 
     // Update via upsert on chained instance
     const query2 = { _id: new ObjectId(upsertResult1.upsertedId) };
     const update2 = { $set: { quantity: 20 } };
     const upsertResult2 = await client.db(`adventureworks`).collection('products').updateOne(query2, update2, options);
-    console.log(`upsertResult2: ${JSON.stringify(upsertResult2)}\n`);
+    emit(`upsertResult2: ${JSON.stringify(upsertResult2)}\n`);
 
     // Point read doc from collection:
     // - without sharding, should use {_id}
@@ -58,7 +57,7 @@ async function main() {
         _id: new ObjectId(upsertResult1.upsertedId),
         category: "gear-surf-surfboards"
     });
-    console.log(`foundProduct: ${JSON.stringify(foundProduct)}\n`);
+    emit(`foundProduct: ${JSON.stringify(foundProduct)}\n`);
 
     // select all from product category
     const allProductsQuery = {
@@ -67,11 +66,5 @@ async function main() {
 
     // get all documents, sorted by name, convert cursor into array
     const products = await collection.find(allProductsQuery).sort({ name: 1 }).toArray();
-    products.map((product, i) => console.log(`${++i} ${JSON.stringify(product)}`));
+    products.map((product, i) => emit(`${++i} ${JSON.stringify(product)}`));
 }
-
-main()
-    .then(console.log)
-    .catch(console.error)
-    .finally(() => client.close());
-
